@@ -26,20 +26,58 @@ let tab = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     , [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     , [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     , [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+// 20 x 10
 
 let tetri_l = [
-    [1, 0, 0],
-    [1, 0, 0],
-    [1, 1, 0]];
+    [0, 1, 0, 0],
+    [0, 1, 0, 0],
+    [0, 1, 1, 0],
+    [0, 0, 0, 0]];
 let tetri_j = [
-    [0, 1, 0],
-    [0, 1, 0],
-    [1, 1, 0]];
+    [0, 0, 1, 0],
+    [0, 0, 1, 0],
+    [0, 1, 1, 0],
+    [0, 0, 0, 0]];
+let tetri_t = [
+    [0, 1, 0, 0],
+    [0, 1, 1, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 0]];
+let tetri_z = [
+    [0, 1, 0, 0],
+    [0, 1, 1, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 0]];
+let tetri_s = [
+    [0, 0, 1, 0],
+    [0, 1, 1, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 0]];
+let tetri_o = [
+    [0, 0, 0, 0],
+    [0, 1, 1, 0],
+    [0, 1, 1, 0],
+    [0, 0, 0, 0]];
+let tetri_i = [
+    [0, 1, 0, 0],
+    [0, 1, 0, 0],
+    [0, 1, 0, 0],
+    [0, 1, 0, 0]];
+
+
+//faire une fonction qui dessine directement une piece à un x y
+function draw_tet(tet, x, y) {
+    for (let i = 0; i < tet.length; i++)
+        for (let j = 0; j < tet[0].length; j++)
+            if (tet[i][j] == 1)
+                ctx.fillRect((j + x) * 30, (i + y) * 30, 30, 30);
+}
 
 function add_tetri(tet, x, y) {
-    for (let i = 0; i < 3; i++)
-        for (let j = 0; j < 3; j++)
-            tab[y + j][x + i] = tet[j][i];
+    for (let j = 0; j < tet[0].length; j++)
+        for (let i = 0; i < tet.length; i++)
+            if (tet[i][j] == 1)
+                tab[y + i][x + j] = tet[i][j];
 }
 
 function draw_tab(tab) {
@@ -60,5 +98,148 @@ function draw() {
     }
 }
 
-add_tetri(tetri_j, 4, 0);
-draw_tab(tab);
+function clearframe(tet, x, y) {
+    ctx.clearRect(0, 0, 300, 600);
+}
+
+let c_tet = tetri_t;
+let c_x = 4;
+let c_y = 0;
+
+function down(tet, x, y) {
+    let i = 0;
+    let j = 0;
+    for (i = 0; i < tet.length; i++)
+        for (j = 0; j < tet[0].length; j++) {
+            if (y + i + 1 >= 20 && tet[i][j] == 1)
+                return 1;
+            if (tet[i][j] == 1 && tab[y + i + 1][x + j] == 1)
+                return 1;
+        }
+    return 0;
+                
+}
+
+function left(tet, x, y) {
+    for (let i = 0; i < tet.length; i++)
+        for (let j = 0; j < tet[0].length; j++) {
+            if (tet[i][j] == 1) {
+                if (x + j <= 0) {
+                    return;
+                } else {
+                    if (tab[y + i][x + j - 1] == 1) {
+                        return;
+                    }
+                }
+            }
+        }
+    c_x--;
+}
+
+function right(tet, x, y) {
+    for (let i = 0; i < tet.length; i++)
+        for (let j = 0; j < tet[0].length; j++) {
+            if (tet[i][j] == 1) {
+                if (x + j >= 9) {
+                    return;
+                } else {
+                    if (tab[y + i][x + j + 1] == 1) {
+                        return;
+                    }
+                }
+            }
+        }
+    c_x++;
+}
+
+function rota(tet)
+{
+    let i = 0;
+    let j = 0;
+    let new_m = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]];
+
+    for (i = 0; i < tet[0].length; i++) {
+        for (j = 0; j < tet.length; j++) {
+            new_m[j][3 - i] = tet[i][j];
+        }
+    }
+    return new_m;
+}
+
+function rota_certif(tet, x, y)
+{
+    for (let i = 0; i < tet.length; i++) { //20
+        for (let j = 0; j < tet[0].length; j++) { //10
+            if (tet[i][j] == 1) {
+                if (i + y >= 20 || j + x >= 10 || j + x < 0) {
+                    return 1;
+                } else {
+                    if (tab[i + y][x + j] == 1)
+                        return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+function handleEvent(event) {
+    switch (event.key) {
+        case "z":
+            let new_rota = rota(c_tet);
+            if (rota_certif(new_rota, c_x, c_y) == 0)
+                c_tet = new_rota;
+            break;
+        case "q":
+            left(c_tet, c_x, c_y);
+            break;
+        case "s":
+            if (down(c_tet, c_x, c_y) == 0)
+                c_y++;
+            break;
+        case "d":
+            right(c_tet, c_x, c_y)
+            break;
+        case "Enter":
+            break;
+    }
+}
+
+function ligne_certif(y) {
+    for (let x = 0; x < 10; x++) {
+        if (tab[y][x] == 0)
+            return 1;
+    }
+    return 0;
+}
+
+function ligne_suppr(y) {
+    for (let row = y; row > 0; row--) {
+        tab[row] = [...tab[row - 1]];
+    }
+    tab[0] = Array(10).fill(0);
+}
+
+function loop()
+{
+    clearframe(c_tet, c_x, c_y);
+    draw();
+    draw_tab(tab);
+    if (down(c_tet, c_x, c_y) == 1) {
+        add_tetri(c_tet, c_x, c_y);
+        for (let i = 0; i < 20; i++)
+            if (ligne_certif(i) == 0)
+                ligne_suppr(i);
+        c_tet = tetri_i;
+        c_x = 4;
+        c_y = 0;
+    } else
+        c_y++;
+    draw_tet(c_tet, c_x, c_y);
+}
+document.addEventListener("keydown", handleEvent);
+setInterval(loop, 500);
