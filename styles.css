@@ -8,9 +8,26 @@
 
 #score {
     border: 2px solid black;
+    margin-right: 50%;
+    display: flex;
+    align-items: center;
+}
+
+#num_score {
+    margin-left: 10px;
+}
+
+header {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 body {
-    background-color: #370740;
+    background-color: #540e61;
     /*background-color: #DB6DEE;*/
 }

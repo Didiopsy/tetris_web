@@ -1,0 +1,10 @@
+Bon tetris fini pour le moment, pour l'améliorer:
+
+Ajout du prochain tetris
+ajout de niveau
+ajout d'un ombre (mettre dans les parametres si l'on veut d'ombre)
+utiliser le score et faire un tableau des scores (dans une autre fenetre)
+rendre plus dynamique le tetris, (
+    mettre un temps en plus à chaque mouvement
+    montrer le changement à chaque mouvement
+)
