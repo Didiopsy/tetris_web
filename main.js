@@ -64,6 +64,17 @@ let tetri_i = [
     [0, 1, 0, 0],
     [0, 1, 0, 0]];
 
+let bag_base = [
+    tetri_l,
+    tetri_j,
+    tetri_t,
+    tetri_z,
+    tetri_s,
+    tetri_o,
+    tetri_i
+];
+
+let bag = [];
 
 //faire une fonction qui dessine directement une piece à un x y
 function draw_tet(tet, x, y) {
@@ -101,10 +112,6 @@ function draw() {
 function clearframe(tet, x, y) {
     ctx.clearRect(0, 0, 300, 600);
 }
-
-let c_tet = tetri_t;
-let c_x = 4;
-let c_y = 0;
 
 function down(tet, x, y) {
     let i = 0;
@@ -224,6 +231,28 @@ function ligne_suppr(y) {
     tab[0] = Array(10).fill(0);
 }
 
+function random_tet(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+function prochaine_tet() {
+    if (bag.length == 0) {
+        bag = random_tet([...bag_base]);
+    }
+    return bag.pop();
+}
+
+
+let c_tet = prochaine_tet();
+let c_x = 4;
+let c_y = 0;
+
 function loop()
 {
     clearframe(c_tet, c_x, c_y);
@@ -231,15 +260,18 @@ function loop()
     draw_tab(tab);
     if (down(c_tet, c_x, c_y) == 1) {
         add_tetri(c_tet, c_x, c_y);
-        for (let i = 0; i < 20; i++)
-            if (ligne_certif(i) == 0)
+        for (let i = 19; i >= 0; i--)
+            if (ligne_certif(i) == 0) {
                 ligne_suppr(i);
-        c_tet = tetri_i;
+                i++;
+            }
+        c_tet = prochaine_tet();
         c_x = 4;
         c_y = 0;
     } else
         c_y++;
     draw_tet(c_tet, c_x, c_y);
 }
+
 document.addEventListener("keydown", handleEvent);
 setInterval(loop, 500);

@@ -9,3 +9,8 @@
 #score {
     border: 2px solid black;
 }
+
+body {
+    background-color: #370740;
+    /*background-color: #DB6DEE;*/
+}
