@@ -8,3 +8,4 @@ rendre plus dynamique le tetris, (
     mettre un temps en plus à chaque mouvement
     montrer le changement à chaque mouvement
 )
+mettre de la couleur

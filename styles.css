@@ -2,9 +2,7 @@
     border: 1px solid black;
 }
 
-#next {
-    border: 2px solid black;
-}
+
 
 #score {
     border: 2px solid black;
@@ -13,8 +11,25 @@
     align-items: center;
 }
 
+#jeu {
+    display: flex;
+    margin: 0;
+}
+
+#next {
+    border: 2px solid black;
+    margin-left: 2px;
+    width: 50px;
+    height: 50px;
+}
+
+#command {
+    position:relative;
+    left: 2px;
+}
+
 #num_score {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 header {

@@ -75,6 +75,7 @@ let bag_base = [
 ];
 
 let bag = [];
+let bag_s = [];
 
 //faire une fonction qui dessine directement une piece à un x y
 function draw_tet(tet, x, y) {
@@ -243,12 +244,13 @@ function random_tet(array) {
 
 function prochaine_tet() {
     if (bag.length == 0) {
-        bag = random_tet([...bag_base]);
+        bag = bag_s;
+        bag_s = random_tet([...bag_base]);
     }
     return bag.pop();
 }
 
-
+bag_s = random_tet([...bag_base]);
 let c_tet = prochaine_tet();
 let c_x = 4;
 let c_y = 0;
